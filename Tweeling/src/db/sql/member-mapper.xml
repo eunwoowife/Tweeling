@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 멤버와 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+	<entry key="LoginMember">
+		SELECT * FROM MEMBER
+		WHERE USER_ID=?
+		AND USER_PWD =?
+		AND USER_STATUS ='Y'
+	</entry>
+	<entry key="insertMember">
+		INSERT INTO MEMBER(USER_NO,USER_ID,USER_PWD,USER_NAME,USER_NICKNAME,USER_PHONE,USER_EMAIL,USER_GENDER,USER_ADDRESS,USER_BDAY,USER_BIAS,USER_ENROLLDATE,USER_POINT,USER_STATUS,ADMIN_STATUS)
+			VALUES(SEQ_MNO.NEXTVAL,?,?,?,?,?,?,?,?,TO_Date(?),?,DEFAULT,0,'Y','N')
+	</entry>
+
+	<entry key="findId">
+	SELECT USER_ID FROM MEMBER WHERE USER_NAME =? AND USER_EMAIL = ? AND USER_STATUS ='Y'
+	</entry>
+
+	<entry key="idCheck">
+		SELECT COUNT(*) "COUNT"
+		FROM MEMBER
+		WHERE USER_ID = ?
+	</entry>
+	<entry key="nickCheck">
+		SELECT COUNT(*) "COUNT"
+		FROM MEMBER
+		WHERE USER_NICKNAME = ?
+	</entry>
+	
+	<entry key="updateMember">
+		UPDATE MEMBER
+		SET USER_NICKNAME = ?
+			,USER_PWD=?
+			,USER_ADDRESS=?
+			,USER_EMAIL=?
+			,USER_PHONE=?
+			,USER_BIAS=?
+			,USER_ID=?
+		WHERE USER_ID = ?
+	</entry>
+	
+	<entry key="deleteMember">
+		UPDATE MEMBER
+		SET USER_STATUS='N'
+		WHERE USER_ID = ?
+		AND USER_PWD = ?
+	</entry>
+	
+	<!-- 구분선 -->
+	<entry key="selectMember">
+		SELECT USER_NO, USER_ID, USER_PWD, USER_NAME, USER_NICKNAME, USER_PHONE, USER_EMAIL, USER_GENDER, USER_ADDRESS, USER_BDAY, USER_BIAS, USER_ENROLLDATE, USER_POINT, USER_STATUS 
+		FROM MEMBER
+		WHERE USER_NO = ?
+			AND USER_STATUS = 'Y'
+	</entry>
+	<entry key="orderCount">
+		SELECT COUNT(*) AS COUNT
+		FROM ORDERS
+		WHERE USER_NO = ?
+		AND ORDER_STATUS = 'Y'
+	</entry>
+	<entry key="selectMileage">
+		SELECT USER_POINT AS POINT
+		FROM MEMBER
+		WHERE USER_NO = ?
+		AND USER_STATUS = 'Y'
+	</entry>
+	<entry key="selectWishList">
+		SELECT W.PRODUCT_NO, P.PRODUCT_NAME, P.PRODUCT_PRICE, (PA.FILE_PATH || PA.ORIGIN_NAME) AS TITLE_IMG
+		FROM WISH W
+		JOIN PRODUCT P ON (P.PRODUCT_NO = W.PRODUCT_NO)
+		JOIN P_ATTACHMENT PA ON (P.PRODUCT_NO = PA.REF_PNO)
+		WHERE W.USER_NO = ?
+		    AND PA.FILE_LEVEL=1
+	</entry>
+	<entry key="selectCouponNum">
+		SELECT COUNT(*) AS COUNT
+		FROM COUPON
+		WHERE USER_NO = ?
+		AND COUPON_STATUS = 'Y'
+	</entry>
+	<entry key="selectCouponList">
+		SELECT COUPON_NO, USER_NO, COUPON_NAME, COUPON_PERCENT, COUPON_STATUS
+		FROM COUPON
+		WHERE USER_NO = ?
+		    AND COUPON_STATUS = 'Y'
+	</entry>
+</properties>

@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+body {
+    overflow-x: hidden;
+    font-family: 'Montserrat', sans-serif;
+}
+
+nav {
+    line-height: 1.0;
+}
+
+.bg-custom {
+    background: #D7BFDC;
+}
+
+.nav-link {
+    color: #000 !important;
+}
+
+.mega {
+    width: 100%;
+    background: #D7BFDC;
+    margin: 0;
+    border-radius: 0px;
+}
+
+#navbar-left {
+    padding-left: 200px;
+}
+
+#navbar-right {
+    padding-right: 300px;
+}
+
+.nav-item {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.mega ul {
+    list-style-type: none;
+    padding-top: 20px;
+    padding-left: 0;
+}
+
+.mega li {
+    padding: 2px;
+}
+
+.mega li a {
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.mega li a:hover {
+    color: rgb(161, 161, 161);
+    text-decoration: underline;
+}
+
+.navbar li>ul.dropdown-menu {
+    display: block;
+    transition: all 0.5s ease-in-out;
+}
+
+.navbar li:hover>ul.dropdown-menu {
+    display: block;
+    transition: all 0.5s ease-in-out;
+}
+
+.dropdown-menu {
+    padding-top: 0;
+    padding-bottom: 20px;
+}
+
+.searchbar {
+    border: 0;
+    padding: 0px
+}
+
+@media(max-width: 768px) {
+    #navbar-left {
+        padding: 0;
+    }
+
+    #navbar-right {
+        flex-direction: row;
+    }
+
+    #navbar-right .nav-item {
+        padding-right: 2em;
+    }
+
+    .ml-auto {
+        display: block;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+}
+
+#tweelingLogo1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+#tweelingLogo2 {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    padding-right: 80px;
+    padding-left: 20px;
+}
+
+i {
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.input-group {
+    margin-bottom: auto;
+    margin-top: auto;
+    border-radius: 30px;
+    padding: 10px;
+}
+
+.search {
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    border: 2px solid black;
+}
+
+#searchInput {
+    width: 80%;
+    padding: 10px 5px;
+    float: left;
+    font-weight: bold;
+    color: #000;
+    border: 0;
+    background: transparent;
+    border-radius: 3px 0 0 3px;
+    margin-left: 25px;
+}
+
+#searchInput:focus {
+    outline: 0;
+    background-color: transparent;
+}
+
+::placeholder {
+    color: #000;
+}
+
+#searchButton {
+    position: relative;
+    float: right;
+    font-weight: bold;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 39px;
+    width: 120px;
+    color: #000;
+    background: transparent;
+    border-left: 0 3px 3px 0;
+}
+
+#searchButton:focus {
+    outline: 0;
+}

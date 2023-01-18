@@ -1,0 +1,147 @@
+/* .navbar{
+    height: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+}
+      
+.navbar #logo{
+    line-height: 60px;
+} */
+/* 
+.navbar img{
+    vertical-align: top;
+    border: blanchedalmond 5px solid;
+} */
+
+/* .navbar #menu{
+    float: right;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar #menu li{
+    float: left;
+    margin-left: 50px;
+    line-height: 60px;
+}
+
+.navbar #menu li a{
+    color: #545454;
+    font-size: 13px;
+    text-decoration: none;
+} */
+.inner{
+    width: 70%;
+    
+}
+
+.header1{
+    width: 100%;
+}
+
+.together{
+    float: left;
+    position: relative;
+    margin-left: 18%;
+    
+}
+.content2{
+    margin-left: 85%;
+    margin-top: 3%;
+    position: absolute;
+}
+
+#cList{
+    list-style-type: none;
+}
+
+#cList li{
+    margin: 15px;
+}
+
+#pTitle{
+   text-align: center;
+}
+.category-list{
+    /* margin-right: 0px; */
+    text-align: right;
+    /* margin-right: 200px; */
+    /* margin-top: 500px; */
+}
+
+.category-list a{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: gray;
+}
+
+.category-list a:hover{
+    /* background-color: magenta;
+    color: white;
+    font-style:italic; */
+    text-decoration: underline 4px;
+}
+
+.product-list{
+    width: 1500px;
+    /* margin-left: 350px; */
+    margin-right: auto;
+}
+
+.products h3{
+    font-size: 50px;
+    color: #545454;
+    margin-top:60px;
+    margin-bottom: 60px;
+    /* text-align: center; */
+    text-align: left;
+}
+
+#sortList{
+    margin-left: 70%;
+}
+
+.product{
+    display: block;
+    width: 400px;
+    text-align: center;
+    text-decoration:none;
+    color: black;
+    float:left;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 100px;
+}
+
+.selectPd:hover{
+    /* filter: brightness(0.8); */
+    filter: grayscale(1);
+}
+
+.celeb-name{
+    color: rgb(195, 195, 195);
+}
+.product-name{
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+
+.clearfix{
+    clear: both;
+}
+
+
+/* .footer{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.footer a{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration:none;
+} */
