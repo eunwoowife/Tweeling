@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 리뷰와 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+	<entry key="insertReview">
+		 INSERT INTO REVIEW(REVIEW_NO,
+	                                        USER_NO,
+	                                        REF_PNO,
+	                                        ORDER_NO,
+	                                        REVIEW_CONTENT,
+	                                        REVIEW_SCORE,
+	                                        CREATE_DATE,
+	                                        REVIEW_STATUS)
+	    VALUES(SEQ_RNO.NEXTVAL,?,?,?,?,?,SYSDATE,'Y')           
+	</entry>
+	
+	<entry key="checkReview">
+		SELECT COUNT(*) COUNT
+		FROM REVIEW R
+		JOIN ORDER_DETAIL ON(PRODUCT_NO=REF_PNO)
+		WHERE R.ORDER_NO=?
+		AND REF_PNO=?
+		AND USER_NO=?
+	</entry>
+</properties>

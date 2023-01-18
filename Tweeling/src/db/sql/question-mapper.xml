@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 문의와 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+	<entry key="selectListCount">
+		SELECT COUNT(*) AS COUNT
+		FROM QUESTION
+		WHERE QUESTION_WRITER = ?
+			AND STATUS = 'Y'
+	</entry>
+	<entry key="selectList">
+		SELECT RNUM, QUESTION_NO, QUESTION_WRITER, QUESTION_TYPE, QUESTION_TITLE, QUESTION_CONTENT, CREATE_DATE, STATUS
+		FROM (
+		      SELECT ROWNUM RNUM,A.*      
+		      FROM	(
+		            SELECT QUESTION_NO,
+		                   QUESTION_WRITER,
+		                   QUESTION_TYPE,
+		                   QUESTION_TITLE,
+		                   QUESTION_CONTENT,
+		                   CREATE_DATE,
+		                   STATUS
+		            FROM QUESTION Q 
+		            WHERE QUESTION_WRITER = ?
+		                AND Q.STATUS ='Y'
+		            ORDER BY CREATE_DATE DESC) A
+		           )
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="insertQuestion">
+		INSERT INTO QUESTION(QUESTION_NO, QUESTION_WRITER, QUESTION_TYPE, QUESTION_TITLE, QUESTION_CONTENT, CREATE_DATE)
+		VALUES(SEQ_QNO.NEXTVAL, ?, ?, ?, ?, SYSDATE)
+	</entry>
+	<entry key="insertAttachment">
+		INSERT INTO Q_ATTACHMENT(FILE_NO, QUESTION_NO, ORIGIN_NAME, FILE_PATH, FILE_LEVEL)
+		VALUES (SEQ_QFNO.NEXTVAL, SEQ_QNO.CURRVAL, ?, ?, 1)
+	</entry>
+	<entry key="selectQuestion">
+		SELECT QUESTION_NO, QUESTION_WRITER, QUESTION_TYPE, QUESTION_TITLE, QUESTION_CONTENT, CREATE_DATE, STATUS
+		FROM QUESTION
+		WHERE QUESTION_NO = ?
+			AND STATUS = 'Y'
+	</entry>
+	<entry key="selectAttachment">
+		SELECT FILE_NO, QUESTION_NO, ORIGIN_NAME, FILE_PATH, FILE_LEVEL
+		FROM Q_ATTACHMENT
+		WHERE QUESTION_NO = ?
+	</entry>
+	<entry key="updateQuestion">
+		UPDATE QUESTION
+		SET QUESTION_TYPE = ?
+		    , QUESTION_TITLE = ?
+		    , QUESTION_CONTENT = ?
+		WHERE QUESTION_NO = ?
+	</entry>
+	<entry key="updateAttachment">
+		UPDATE Q_ATTACHMENT
+		SET ORIGIN_NAME = ?
+			, FILE_PATH = ?
+		WHERE FILE_NO = ?
+	</entry>
+	<entry key="insertNewAttachment">
+		INSERT INTO Q_ATTACHMENT(FILE_NO, QUESTION_NO, ORIGIN_NAME, FILE_PATH)
+		VALUES (SEQ_QFNO.NEXTVAL, ?, ?, ?)
+	</entry>
+	<entry key="deleteQuestion">
+		UPDATE QUESTION
+		SET STATUS = 'N'
+		WHERE QUESTION_NO = ?	
+	</entry>
+	<entry key="selectReplyList">
+		SELECT QUESTION_REPLY_NO, QUESTION_REPLY_CONTENT, M.USER_ID, CREATE_DATE
+		FROM QUESTION_REPLY R 
+		JOIN MEMBER M ON (M.USER_NO=R.QUESTION_REPLY_WRITER)
+		WHERE R.STATUS = 'Y'
+			AND R.REF_QUESTION_NO = ?
+		ORDER BY CREATE_DATE DESC
+	</entry>
+	<entry key="insertReply">
+		INSERT INTO QUESTION_REPLY(QUESTION_REPLY_NO, QUESTION_REPLY_CONTENT,REF_QUESTION_NO, QUESTION_REPLY_WRITER)
+		VALUES (SEQ_QRENO.NEXTVAL, ?, ?, ?)
+	</entry>
+	<entry key="deleteReply">
+		UPDATE QUESTION_REPLY
+		SET STATUS = 'N'
+		WHERE QUESTION_REPLY_NO = ?	
+	</entry>
+</properties>

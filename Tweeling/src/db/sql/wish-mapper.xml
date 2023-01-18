@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 이벤트와 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+
+	<entry key="WishListView">
+	SELECT PRODUCT_NO
+	FROM WISH
+	WHERE USER_NO =?
+	
+	</entry>
+
+
+	<entry key="WishAdd">
+	INSERT INTO WISH VALUES (?,?)
+	
+	</entry>
+	
+
+	
+</properties>

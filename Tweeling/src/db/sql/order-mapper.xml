@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 주문과 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+	<entry key="selectLastOrder">
+	<!-- 가장 마지막 주문 정보만(상품정보 포함X) -->
+		SELECT A.*
+		FROM (SELECT ORDER_NO, USER_NO, COUPON_NO, ORDER_POINT, ORDER_DATE, ORDER_TOTAL_AMOUNT, DELIVERY_FEE, ORDER_FINAL_AMOUNT, ORDER_STATUS
+		    FROM ORDERS
+		    WHERE USER_NO = ?
+		    ORDER BY ORDER_DATE DESC) A
+		WHERE ROWNUM = 1
+	</entry>
+	<entry key="selectExpensiveThumbnail">
+	<!-- 가장 마지막 주문에 포함된 상품 중 가장 비싼 것의 썸네일 정보 -->
+		SELECT FILE_NO, REF_PNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL
+		FROM P_ATTACHMENT PA
+		WHERE PA.REF_PNO = (SELECT A.*
+		                    FROM (SELECT OD.PRODUCT_NO
+		                        FROM ORDER_DETAIL OD
+		                        JOIN PRODUCT P ON(OD.PRODUCT_NO=P.PRODUCT_NO)
+		                        WHERE OD.ORDER_NO = ?
+		                        ORDER BY P.PRODUCT_PRICE DESC) A
+		                    WHERE ROWNUM = 1)
+			AND FILE_LEVEL = 1
+	</entry>
+	<entry key="selectOrderProductNum">
+	<!--해당 주문의 상품 종류 수 검색 -->
+		SELECT COUNT(*) COUNT
+		FROM ORDER_DETAIL
+		WHERE ORDER_NO = ?
+	</entry>
+	<entry key="selecrOrderList">
+	<!-- 해당 사용자의 최근 주문내역 리스트 5 -->
+		<![CDATA[
+		SELECT A.*
+		FROM (SELECT ORDER_NO, USER_NO, COUPON_NO, ORDER_POINT, ORDER_DATE, ORDER_TOTAL_AMOUNT, DELIVERY_FEE, ORDER_FINAL_AMOUNT, ORDER_STATUS
+		    FROM ORDERS
+		    WHERE USER_NO = ?
+		    	AND ORDER_DATE BETWEEN ? AND ? +1
+		        AND ORDER_STATUS = 'Y'
+		        AND ORDER_TOTAL_AMOUNT > 0 
+		    ORDER BY ORDER_DATE DESC) A
+		WHERE ROWNUM < 6
+		]]>
+	</entry>
+	<entry key="selectExpensiveProductName">
+	<!-- 가장 비싼 상품의 이름 -->
+		SELECT A.*
+		FROM (SELECT ORDER_NO, OD.PRODUCT_NO, P.PRODUCT_NAME, P.PRODUCT_PRICE
+		    FROM ORDER_DETAIL OD
+		    JOIN PRODUCT P ON(P.PRODUCT_NO=OD.PRODUCT_NO)
+		    WHERE OD.ORDER_NO = ?
+		        AND OD.STATUS='Y'
+		    ORDER BY P.PRODUCT_PRICE DESC) A
+		WHERE ROWNUM = 1
+	</entry>
+	<entry key="selectLastOrderThumbnailList">
+	<!-- 가장 마지막에 주문한 상품들의 썸네일 -->
+		SELECT FILE_NO, REF_PNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL
+		FROM P_ATTACHMENT
+		WHERE REF_PNO IN(SELECT PRODUCT_NO
+		                FROM PRODUCT
+		                WHERE PRODUCT_NO IN (SELECT PRODUCT_NO
+		                                FROM ORDER_DETAIL
+		                                WHERE ORDER_NO = ?))
+		    AND FILE_LEVEL = 1
+	</entry>
+	<entry key="selectLastOrderProductList">
+	<!-- 가장 마지막 주문의 상품 리스트 -->
+		SELECT PRODUCT_NO, PRODUCT_CATEGORY_NO, PRODUCT_NAME, CELEB_NAME, PRODUCT_STOCK, PRODUCT_CONTENT, PRODUCT_PRICE, PRODUCT_COMMENT, PRODUCT_ENROLLDATE, PRODUCT_STATUS
+		FROM PRODUCT
+		WHERE PRODUCT_NO IN (SELECT PRODUCT_NO
+		                FROM ORDER_DETAIL
+		                WHERE ORDER_NO = ?)
+		    AND PRODUCT_STATUS = 'Y'
+	</entry>
+
+	<entry key="selectOrderNo">
+	<!-- 해당 기간 주문 내역 검색 -->
+		SELECT ORDER_NO
+		FROM ORDERS
+		WHERE USER_NO = ?
+		    AND ORDER_DATE BETWEEN ? AND ? +1
+		    AND ORDER_STATUS = 'Y'
+		ORDER BY ORDER_DATE DESC
+	</entry>
+	<entry key="selecrOrderFullList">
+		SELECT ORDER_NO, ORDER_DATE, P.PRODUCT_NO PNO, PRODUCT_NAME, PRODUCT_PRICE, QUANTITY, FILE_PATH, ORIGIN_NAME
+		FROM ORDERS O
+		JOIN ORDER_DETAIL OD USING(ORDER_NO)
+		JOIN PRODUCT P ON(P.PRODUCT_NO=OD.PRODUCT_NO)
+		JOIN P_ATTACHMENT PA ON(P.PRODUCT_NO=PA.REF_PNO)
+		WHERE ORDER_NO = ?
+		    AND O.ORDER_STATUS = 'Y'
+		    AND PA.FILE_LEVEL=1
+		ORDER BY O.ORDER_DATE DESC
+	</entry>
+	
+<!-- 여기서부터 장바구니-결제로 이어지는 오더 sql문입니다 -->
+
+	<entry key="OrderMemeberListView">
+	SELECT USER_NO, USER_NAME, USER_PHONE, USER_EMAIL, USER_ADDRESS
+	FROM MEMBER
+	WHERE USER_NO =?
+	</entry>
+	
+	<entry key="OrderNumberSelect">
+	SELECT A.*
+	FROM (SELECT ORDER_NO, USER_NO, COUPON_NO, ORDER_POINT, ORDER_DATE, ORDER_TOTAL_AMOUNT, DELIVERY_FEE, ORDER_FINAL_AMOUNT, ORDER_STATUS
+		    FROM ORDERS
+		    WHERE USER_NO = ?
+		    ORDER BY ORDER_DATE DESC) A
+		WHERE ROWNUM = 1
+	</entry>
+	
+	
+	<entry key="OrderDefaultInsert">
+	INSERT INTO ORDERS (ORDER_NO, USER_NO, COUPON_NO, ORDER_TOTAL_AMOUNT, ORDER_FINAL_AMOUNT)
+	VALUES (SEQ_ONO.NEXTVAL, ?, 1,?, ?)
+	</entry>
+	
+	<entry key="OrderDetailInsert">
+	INSERT INTO ORDER_DETAIL VALUES (?, ?, ?, 0, 0, 'Y')
+	</entry>
+	
+	
+	<entry key="OrderShippingInsert">
+	INSERT INTO SHIPPING (ORDER_NO, RECEIVER, ADDRESS, ZIP_CODE, SHIPPING_COMMENT, PHONE1, PHONE2, STATUS)
+	VALUES (?, ?, ? , 20215, ? , ?, ? , 'Y')
+	</entry>
+
+	
+	<entry key="OrderListView">
+	SELECT PRODUCT_NO, PRODUCT_QUANTITY, CELEB_NAME, PRODUCT_NAME, PRODUCT_PRICE, FILE_PATH || ORIGIN_NAME "TITLEIMG"
+	FROM CART
+	JOIN PRODUCT USING (PRODUCT_NO)
+	JOIN P_ATTACHMENT ON (PRODUCT_NO = REF_PNO)
+	WHERE FILE_LEVEL = 1
+    AND PRODUCT_NO = ?
+	</entry>
+	
+	<entry key="OrderOneListView">
+	SELECT PRODUCT_NO, CELEB_NAME, PRODUCT_NAME, PRODUCT_PRICE, FILE_PATH || ORIGIN_NAME "TITLEIMG"
+	FROM PRODUCT
+	JOIN P_ATTACHMENT ON (PRODUCT_NO = REF_PNO)
+	WHERE FILE_LEVEL = 1
+    AND PRODUCT_NO = ?
+	</entry>
+	
+	
+	
+</properties>
+
+	

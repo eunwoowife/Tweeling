@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 이벤트와 관련된 쿼리문을 모아놓을 곳 -->
+<properties>
+
+	<entry key="searchListView">
+	SELECT PRODUCT_NO,
+			PRODUCT_NAME,
+			CELEB_NAME,
+			PRODUCT_PRICE,
+			FILE_PATH || ORIGIN_NAME "TITLEIMG"
+	FROM PRODUCT
+	JOIN P_ATTACHMENT ON (PRODUCT_NO = REF_PNO)
+	WHERE PRODUCT_STATUS='Y'
+	AND FILE_LEVEL=1
+    AND (PRODUCT_NAME LIKE ? OR CELEB_NAME LIKE ?)
+	
+	</entry>
+
+
+	
+	
+
+	
+</properties>
